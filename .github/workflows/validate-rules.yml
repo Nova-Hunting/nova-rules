@@ -1,0 +1,91 @@
+name: Validate Nova Rules
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.nov'
+      - 'incidents/**'
+      - 'validation/**'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/validate-rules.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**.nov'
+      - 'incidents/**'
+      - 'validation/**'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/validate-rules.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    name: Syntax Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Run syntax validation
+        run: uv run --python 3.11 --with-requirements requirements.txt validation/validate_syntax.py --rules-dir . -v
+
+  metadata:
+    name: Metadata Validation
+    needs: [syntax]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Run metadata validation
+        run: uv run --python 3.11 --with-requirements requirements.txt validation/validate_metadata.py --rules-dir . -v
+
+  lint:
+    name: Lint Rules
+    needs: [syntax]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Run lint checks
+        run: uv run --python 3.11 --with-requirements requirements.txt validation/lint_rules.py --rules-dir . -v
+
+  test:
+    name: Rule Tests
+    needs: [syntax]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Cache HuggingFace models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-hf-all-MiniLM-L6-v2
+          restore-keys: ${{ runner.os }}-hf-
+
+      - name: Run rule tests
+        run: uv run --python 3.11 --with-requirements requirements.txt tests/test_rules.py --rules-dir . --tests-dir tests/ -v
