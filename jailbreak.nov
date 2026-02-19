@@ -162,6 +162,7 @@ rule DeveloperModeJailbreak1
         description = "Detects Developer Mode jailbreak attempts using only keywords and LLM"
         author = "Thomas Roccia"
         uuid = "81611b76-aa8b-4196-8ca4-6d0b798c3d61"
+        severity = "medium"
     
     keywords:
         $dev_mode = "Developer Mode"

@@ -4,6 +4,7 @@ rule PromptInjection
         description = "Detects common prompt injection attempts"
         author = "Thomas Roccia"
         uuid = "1bf39921-aef7-4193-b3e6-957280ccad33"
+        severity = "medium"
 
     keywords:
         $bypass1 = "ignore previous instructions"
@@ -22,6 +23,7 @@ rule PromptInjection2
         description = "Detects common prompt injection attempts"
         author = "Thomas Roccia"
         uuid = "0c40c41b-5613-4967-ab89-e65ab5ff9cdf"
+        severity = "medium"
 
     keywords:
         $bypass1 = "ignore previous instructions"
