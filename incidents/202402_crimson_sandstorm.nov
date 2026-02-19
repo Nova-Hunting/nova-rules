@@ -43,7 +43,7 @@ rule DefenseEvasionCodeCrimsonSandstorm
         (keywords.$evasion or keywords.$cleanup) and llm.$defense_evasion
 }
 
-rule DefenseEvasionAVCrimsonSandstorm
+rule DefenseEvasionAvCrimsonSandstorm
 {
     meta:
         description = "Detection of Crimson Sandstorm defense evasion coding prompts, specifically AV bypass"
