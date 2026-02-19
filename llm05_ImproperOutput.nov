@@ -1,4 +1,4 @@
-rule LLM_ImproperOutputHandling
+rule LLMImproperOutputHandling
 {
     meta:
         description = "Detects potential exploitation of unsafe LLM output handling such as code execution, XSS, SQLi, or injection into downstream systems without validation."
