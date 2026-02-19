@@ -27,7 +27,7 @@ rule UserEventResearch
     meta:
         description = "Performing research on how to examine and identify incriminating user events on Windows using scripts"
         author = "@bees@infosec.exchange"
-        uuid = "d48081c0-0470-4f5d-bcf6-9f58a974bac2"
+        uuid = "a9eb13b3-3c05-4975-9c63-6564ecfd9847"
         version = "1.0.0"
         category = "LLM-enhanced scripting techniques"
         severity = "high"
