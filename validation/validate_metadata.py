@@ -24,7 +24,7 @@ REQUIRED_FIELDS = ["description", "author", "severity", "uuid"]
 RECOMMENDED_FIELDS = ["version", "category"]
 OPTIONAL_FIELDS = ["reference", "hash", "attack_category"]
 VALID_SEVERITIES = ["low", "medium", "high", "critical"]
-CATEGORY_PATTERN = re.compile(r"^[a-z][a-z0-9_]*(/[a-z][a-z0-9_]*)+$")
+CATEGORY_PATTERN = re.compile(r"^[a-z][a-z0-9_ ]*(/[a-z][a-z0-9_ ]*)+$")
 
 
 def validate_uuid_v4(value: str) -> bool:
