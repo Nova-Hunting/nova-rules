@@ -1,6 +1,6 @@
 # Nova Rules Categories
 
-This document defines the four main categories and their subcategories for Nova rules. These categories are used in the `category` metadata field of each rule.
+This document defines the four main categories and their subcategories for Nova rules, based on the [official Nova taxonomy](https://promptintel.novahunting.ai/taxonomy). These categories are used in the `category` metadata field of each rule.
 
 ## 1. Prompt Manipulation (7 threats)
 

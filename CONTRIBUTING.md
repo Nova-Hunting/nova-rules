@@ -45,7 +45,7 @@ All rules must include the following fields in the `meta` section:
 | `description` | Required | High-level explanation of the detection goal. |
 | `author` | Required | Credit for the rule creator. |
 | `version` | Required | Semantic versioning (e.g., `1.0.0`). |
-| `category` | Required | Must match a value in [CATEGORIES.md](CATEGORIES.md) (format: `category/subcategory`). |
+| `category` | Required | Must match a value in [CATEGORIES.md](CATEGORIES.md) (following the [official taxonomy](https://promptintel.novahunting.ai/taxonomy)) in the format: `category/subcategory`. |
 | `severity` | Required | One of: `low`, `medium`, `high`, `critical`. |
 | `uuid` | Required | A unique Version 4 UUID. |
 | `date` | Required | Initial creation date in `YYYY-MM-DD` format. |
@@ -67,7 +67,7 @@ All rules must include the following fields in the `meta` section:
 - **Naming Convention**: All rules must follow the `PascalCase` format (e.g., `SuspiciousBase64Injection` instead of `suspicious_base64`).
 - **Unique Rule Names**: Every rule must have a unique name across the entire repository.
 - **File Extensions**: All rule files must use the `.nov` extension. Other extensions like `.yara` or `.rule` are not permitted.
-- **Granular Categories**: Always use the most specific subcategory available in `CATEGORIES.md`.
+- **Granular Categories**: Always use the most specific subcategory available in [CATEGORIES.md](CATEGORIES.md) (based on the [official taxonomy](https://promptintel.novahunting.ai/taxonomy)).
 - **Test Your Rules**: Ensure your conditions are not too broad (preventing false positives) or too narrow (preventing false negatives). Every new rule should be accompanied by a test case in a corresponding YAML file in the `tests/` directory.
 - **UUIDs**: Never reuse a UUID from another rule. Use a Version 4 UUID generator.
 
