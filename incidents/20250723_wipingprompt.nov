@@ -3,9 +3,12 @@ rule DestructiveSystemCleaner
     meta:
         description = "Detects prompts instructing AI agents to wipe local and cloud resources using filesystem and AWS CLI tools."
         author = "Thomas Roccia"
+        version = "1.0.0"
+        category = "abusing_functions/agentic_misuse"
         severity = "critical"
         reference = "https://www.404media.co/hacker-plants-computer-wiping-commands-in-amazons-ai-coding-agent/"
         uuid = "9ebdcd74-2088-444b-996d-966c9aa2a24e"
+        date = "2026-02-21"
 
     keywords:
         $aws_ec2 = "aws --profile"

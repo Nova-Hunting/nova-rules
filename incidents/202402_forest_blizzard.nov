@@ -3,10 +3,11 @@ rule OperationsResearch
     meta:
         description = "Detects reference of sensitive but not classified satellite, radar, or radio protocols"
         author = "@bees@infosec.exchange"
+        uuid = "193459c9-dceb-484f-bca8-01ce2d072fcd"
+        date = "2026-02-21"
         version = "1.0.0"
-        category = "reconnaissance/vulnerability"
+        category = "abusing_functions/reconnaissance"
         severity = "high"
-        attack_category = "LLM-informed reconnaissance"
         reference = "OpenAI + Microsoft Report 202402 - Forest Blizzard Recon"
 
     keywords:
@@ -27,10 +28,11 @@ rule ScriptingSupport
     meta:
         description = "Detects references to a range of Python-centric scripting support requirements"
         author = "@bees@infosec.exchange"
+        uuid = "4572b79f-39a8-4dc3-a981-4fc6b6d8b051"
+        date = "2026-02-21"
         version = "1.0.0"
-        category = "support"
+        category = "abusing_functions/crime_automation"
         severity = "high"
-        attack_category = "LLM-enhanced scripting techniques"
         reference = "OpenAI + Microsoft Report 202402 - Forest Blizzard Recon"
 
     keywords:

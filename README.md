@@ -83,7 +83,7 @@ rule MyCustomRule
 
 ## Contributing
 
-Contributions are welcome! Please submit a pull request with your new rules or improvements.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to create, validate, and test new rules.
 
 ## License
 

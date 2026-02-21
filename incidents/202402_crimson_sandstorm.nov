@@ -1,12 +1,13 @@
-rule Phishing_CrimsonSandstorm
+rule PhishingCrimsonSandstorm
 {
     meta:
         description = "Detection of Crimson Sandstorm phishing prompts, specifically for commonly targeted industries and geographic regions"
         author = "@tas_kmanager"
+        uuid = "3c10419e-c579-4c99-825a-9d593e7fec82"
+        date = "2026-02-21"
         version = "1.0.0"
-        category = "reconnaissance/social engineering"
+        category = "abusing_functions/social_engineering"
         severity = "medium"
-        attack_category = "LLM-assisted social engineering"
         reference = "Microsoft – Staying Ahead of Threat Actors in the Age of AI (Feb 2024)"
 
     keywords:
@@ -21,15 +22,16 @@ rule Phishing_CrimsonSandstorm
         (keywords.$geo_target and keywords.$industry_target and keywords.$lure) and llm.$phishing
 }
 
-rule DefenseEvasionCode_CrimsonSandstorm
+rule DefenseEvasionCodeCrimsonSandstorm
 {
     meta:
         description = "Detection of Crimson Sandstorm defense evasion coding prompts, specifically code for evasion or code for cleanup."
         author = "@tas_kmanager"
+        uuid = "63a921d1-dd1e-4754-be97-ff664dbe713d"
+        date = "2026-02-21"
         version = "1.0.0"
-        category = "support"
+        category = "abusing_functions/attack_enablement"
         severity = "medium"
-        attack_category = "LLM-enhanced scripting techniques"
         reference = "Microsoft – Staying Ahead of Threat Actors in the Age of AI (Feb 2024)"
 
     keywords:
@@ -43,15 +45,16 @@ rule DefenseEvasionCode_CrimsonSandstorm
         (keywords.$evasion or keywords.$cleanup) and llm.$defense_evasion
 }
 
-rule DefenseEvasionAV_CrimsonSandstorm
+rule DefenseEvasionAvCrimsonSandstorm
 {
     meta:
         description = "Detection of Crimson Sandstorm defense evasion coding prompts, specifically AV bypass"
         author = "@tas_kmanager"
+        uuid = "74387f6c-3dbe-4f37-a884-a9d61904cb11"
+        date = "2026-02-21"
         version = "1.0.0"
-        category = "support"
+        category = "abusing_functions/attack_enablement"
         severity = "medium"
-        attack_category = "LLM-enhanced scripting techniques"
         reference = "Microsoft – Staying Ahead of Threat Actors in the Age of AI (Feb 2024)"
 
     keywords:

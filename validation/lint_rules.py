@@ -85,9 +85,10 @@ def check_naming_convention(
 
 
 def check_file_extensions(nov_files: List[str], rules_dir: str) -> List[str]:
-    """Warn about rule-like files with non-standard extensions.
+    """Check for rule-like files with non-standard extensions.
+    Returns error messages for files that should use .nov.
     Checks sibling files in directories that contain .nov files."""
-    warnings = []
+    errors = []
     checked_dirs = set()
     for nov_path in nov_files:
         parent = os.path.dirname(nov_path)
@@ -98,31 +99,10 @@ def check_file_extensions(nov_files: List[str], rules_dir: str) -> List[str]:
             if fname.endswith((".nova", ".rule", ".yar", ".yara")):
                 fpath = os.path.join(parent, fname)
                 relative = os.path.relpath(fpath, rules_dir)
-                warnings.append(
+                errors.append(
                     f"File '{relative}': non-standard extension. Use .nov instead."
                 )
-    return warnings
-
-
-def check_expensive_rules(
-    rules_with_files: List[Tuple[str, NovaRule]], rules_dir: str
-) -> List[str]:
-    """Warn about rules that have no keyword patterns (expensive to evaluate)."""
-    warnings = []
-    for fpath, rule in rules_with_files:
-        relative = os.path.relpath(fpath, rules_dir)
-        if not rule.keywords and (rule.semantics or rule.llms):
-            types = []
-            if rule.semantics:
-                types.append("semantics")
-            if rule.llms:
-                types.append("llm")
-            warnings.append(
-                f"Rule '{rule.name}' in {relative}: "
-                f"no keyword patterns. Uses only {', '.join(types)}. "
-                f"Consider adding keyword pre-filters for performance."
-            )
-    return warnings
+    return errors
 
 
 def run(rules_dir: str, verbose: bool = False, **kwargs) -> Tuple[int, Dict[str, Any]]:
@@ -174,22 +154,13 @@ def run(rules_dir: str, verbose: bool = False, **kwargs) -> Tuple[int, Dict[str,
         print_pass("All rule names follow PascalCase")
 
     print(f"\n  --- File Extensions ---")
-    ext_warnings = check_file_extensions(nov_files, rules_dir)
-    if ext_warnings:
-        all_warnings.extend(ext_warnings)
-        for w in ext_warnings:
-            print_warn(w)
+    ext_errors = check_file_extensions(nov_files, rules_dir)
+    if ext_errors:
+        all_errors.extend(ext_errors)
+        for e in ext_errors:
+            print_fail(e)
     else:
         print_pass("All rule files use .nov extension")
-
-    print(f"\n  --- Expensive Rules (no keywords) ---")
-    expensive_warnings = check_expensive_rules(successes, rules_dir)
-    if expensive_warnings:
-        all_warnings.extend(expensive_warnings)
-        for w in expensive_warnings:
-            print_warn(w)
-    else:
-        print_pass("All rules have keyword patterns")
 
     error_count = len(all_errors)
     warn_count = len(all_warnings)

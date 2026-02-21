@@ -4,7 +4,10 @@ rule SimpleNovaRule
         description = "Detects harmful content requests"
         author = "Nova User"
         version = "1.0"
+        category = "abusing_functions/malware_generation"
         uuid = "59e50576-91b0-491d-b9f0-5a2a4ea8169a"
+        date = "2026-02-21"
+        severity = "medium"
         
     keywords:
         $hack = "hack"

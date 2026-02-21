@@ -29,7 +29,6 @@ import re
 import copy
 import argparse
 from typing import Dict, Any, List, Tuple, Optional
-
 import yaml
 from colorama import init as colorama_init
 from nova.core.parser import NovaRuleFileParser, NovaParserError

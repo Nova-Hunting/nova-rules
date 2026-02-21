@@ -1,9 +1,13 @@
-rule LLM_Improper_Output_Handling
+rule LLMImproperOutputHandling
 {
     meta:
         description = "Detects potential exploitation of unsafe LLM output handling such as code execution, XSS, SQLi, or injection into downstream systems without validation."
         author = "@fr0gger_"
+        version = "1.0.0"
+        category = "abnormal_outputs/malicious_content"
         uuid = "2d5d267e-a991-4400-92fb-e40b02395339"
+        date = "2026-02-21"
+        severity = "high"
 
     keywords:
         $shell_exec = /(exec|eval|os\.system|subprocess\.run)/

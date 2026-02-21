@@ -32,6 +32,8 @@ If you add an incident, add it to the table below for ease of use.
 0. Forest Blizzard, Feb 2024
 1. Emerald Sleet, Feb 2024
 2. Crimson Sandstorm, Feb 2024
+3. Lamehug APT28, July 2025
+4. Wiping prompt in Amazon's AI Coding Agent, July 2025
 
 
 ### TODO

@@ -3,10 +3,11 @@ rule MSDTResearch
     meta:
         description = "Extracting details about MSDT related vulnerabilities"
         author = "@bees@infosec.exchange"
+        uuid = "d48081c0-0470-4f5d-bcf6-9f58a974bac2"
+        date = "2026-02-21"
         version = "1.0.0"
-        category = "reconnaissance/vulnerability"
+        category = "abusing_functions/reconnaissance"
         severity = "high"
-        attack_category = "LLM-assisted vulnerability research"
         reference = "OpenAI + Microsoft Report 202402 - Emerald Sleet Recon"
 
     keywords:
@@ -27,10 +28,11 @@ rule UserEventResearch
     meta:
         description = "Performing research on how to examine and identify incriminating user events on Windows using scripts"
         author = "@bees@infosec.exchange"
+        uuid = "a9eb13b3-3c05-4975-9c63-6564ecfd9847"
+        date = "2026-02-21"
         version = "1.0.0"
-        category = "support"
+        category = "abusing_functions/attack_enablement"
         severity = "high"
-        attack_category = "LLM-enhanced scripting techniques"
         reference = "OpenAI + Microsoft Report 202402 - Emerald Sleet Recon"
 
     keywords:
@@ -51,9 +53,10 @@ rule DPRKExpertSpearPhishing
         description = "Content for use in spear-phishing campaigns against individuals with DPRK and regime expertise."
         author = "@bees@infosec.exchange"
         version = "1.0.0"
-        category = "reconnaissance/social engineering"
+        uuid = "90f79a68-9210-42a2-8a35-ca88f24fa7ba"
+        date = "2026-02-21"
+        category = "abusing_functions/social_engineering"
         severity = "high"
-        attack_category = "LLM-supported social engineering"
         reference = "OpenAI + Microsoft Report 202402 - Emerald Sleet Recon"
 
     keywords:
@@ -72,10 +75,11 @@ rule DPRKNGORecon
     meta:
         description = "Researching organizations with DPRK-focused defense or nuclear proliferation research"
         author = "@bees@infosec.exchange"
+        uuid = "56bdb9bd-000b-49ce-9550-1136acd70d31"
+        date = "2026-02-21"
         version = "1.0.0"
-        category = "reconnaissance/research"
+        category = "abusing_functions/reconnaissance"
         severity = "high"
-        attack_category = "LLM-informed reconnaissance"
         reference = "OpenAI + Microsoft Report 202402 - Emerald Sleet Recon"
 
     keywords:

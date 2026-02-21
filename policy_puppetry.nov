@@ -3,9 +3,12 @@ rule PolicyPuppetryUniversalBypass
     meta:
         description = "Detect Policy Puppetry techniques to bypass LLM alignment"
         author = "Thomas Roccia"
+        version = "1.0.0"
+        category = "prompt_manipulation/jailbreak"
         severity = "critical"
         reference = "https://hiddenlayer.com/innovation-hub/novel-universal-bypass-for-all-major-llms/"
         uuid = "c2d6523d-b4fe-483a-a148-780df10a2a0b"
+        date = "2026-02-21"
 
     keywords:
         $policy_tag = "<interaction-config>"

@@ -3,10 +3,13 @@ rule ReconGatherWriteCommand
     meta:
         description = "Detects prompts asking to create a one-liner that gathers multiple types of system information and stores it in a specific path"
         author = "Thomas Roccia"
+        version = "1.0.0"
+        category = "abusing_functions/reconnaissance"
         severity = "high"
         reference = "https://cert.gov.ua/article/6284730"
         hash = "384e8f3d300205546fb8c9b9224011b3b3cb71adc994180ff55e1e6416f65715"
         uuid = "4737c5db-c438-493c-9c74-c2fb19b516c2"
+        date = "2026-02-21"
 
     keywords:
         $info_path = "c:\\programdata\\info"
@@ -39,10 +42,13 @@ rule ExfiltrateDocumentsOneLiner
     meta:
         description = "Detects prompts attempting to construct one-liner commands to recursively copy user documents to a hidden directory"
         author = "Thomas Roccia"
+        version = "1.0.0"
+        category = "abusing_functions/contextual_exfiltration"
         severity = "high"
         reference = "https://cert.gov.ua/article/6284730"
         hash = "384e8f3d300205546fb8c9b9224011b3b3cb71adc994180ff55e1e6416f65715"
         uuid = "1b3f7c52-2445-409f-ac7e-dc8ff70eb87f"
+        date = "2026-02-21"
 
     keywords:
         $copy_cmd = "copy recursively"
