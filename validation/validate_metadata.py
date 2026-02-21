@@ -20,12 +20,33 @@ from ci_utils import (
     print_summary
 )
 
-REQUIRED_FIELDS = ["description", "author", "severity", "uuid", "date"]
-RECOMMENDED_FIELDS = ["version", "category"]
+REQUIRED_FIELDS = ["description", "author", "severity", "uuid", "date", "version", "category"]
 OPTIONAL_FIELDS = ["reference", "hash", "modified"]
 VALID_SEVERITIES = ["low", "medium", "high", "critical"]
 CATEGORY_PATTERN = re.compile(r"^[a-z][a-z0-9_ ]*(/[a-z][a-z0-9_ ]*)+$")
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+VALID_CATEGORIES = []
+
+
+def load_valid_categories() -> List[str]:
+    """Load valid categories from CATEGORIES.md."""
+    categories_file = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "CATEGORIES.md"
+    )
+    if not os.path.isfile(categories_file):
+        return []
+
+    categories = []
+    # Pattern to match (`category/subcategory`)
+    pattern = re.compile(r"\(`([a-z][a-z0-9_ ]*(/[a-z][a-z0-9_ ]*)+)`\)")
+    with open(categories_file, "r") as f:
+        for line in f:
+            match = pattern.search(line)
+            if match:
+                categories.append(match.group(1))
+    return categories
 
 
 def validate_uuid_v4(value: str) -> bool:
@@ -43,8 +64,12 @@ def validate_severity(value: str) -> bool:
 
 
 def validate_category(value: str) -> bool:
-    """Validate category format (e.g., 'jailbreak/roleplay')."""
-    return bool(CATEGORY_PATTERN.match(value.lower()))
+    """Validate category format and check if it exists in CATEGORIES.md."""
+    if not CATEGORY_PATTERN.match(value.lower()):
+        return False
+    if VALID_CATEGORIES and value.lower() not in VALID_CATEGORIES:
+        return False
+    return True
 
 
 def validate_date(value: str) -> bool:
@@ -64,9 +89,7 @@ def validate_rule_metadata(
     meta = rule.meta
 
     # Check for unknown fields
-    allowed_fields = (
-        set(REQUIRED_FIELDS) | set(RECOMMENDED_FIELDS) | set(OPTIONAL_FIELDS)
-    )
+    allowed_fields = set(REQUIRED_FIELDS) | set(OPTIONAL_FIELDS)
     unknown_fields = set(meta.keys()) - allowed_fields
     for field in unknown_fields:
         errors.append(f"Unknown metadata field '{field}'")
@@ -75,11 +98,6 @@ def validate_rule_metadata(
     for field in REQUIRED_FIELDS:
         if field not in meta or not str(meta[field]).strip():
             errors.append(f"Missing required field '{field}'")
-
-    # Check recommended fields
-    for field in RECOMMENDED_FIELDS:
-        if field not in meta or not str(meta[field]).strip():
-            warnings.append(f"Missing recommended field '{field}'")
 
     # Validate UUID format
     if "uuid" in meta and str(meta["uuid"]).strip():
@@ -94,12 +112,12 @@ def validate_rule_metadata(
                 f"Must be one of: {', '.join(VALID_SEVERITIES)}"
             )
 
-    # Validate category format
+    # Validate category format and existence
     if "category" in meta and str(meta["category"]).strip():
         if not validate_category(str(meta["category"])):
-            warnings.append(
-                f"Category '{meta['category']}' does not match "
-                f"expected format 'category/subcategory'"
+            errors.append(
+                f"Invalid category '{meta['category']}'. Must match format "
+                f"'category/subcategory' and exist in CATEGORIES.md."
             )
 
     # Validate date format
@@ -117,6 +135,9 @@ def run(
     Main logic for metadata validation.
     Returns (exit_code, details_dict).
     """
+    global VALID_CATEGORIES
+    VALID_CATEGORIES = load_valid_categories()
+    
     rules_dir = os.path.abspath(rules_dir)
     successes, parse_errors = parse_all_rules(rules_dir)
 

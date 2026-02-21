@@ -107,7 +107,7 @@ rule PayloadSplittingAttack
         description = "Detects payload splitting in prompt injection"
         author = "@fr0gger_"
         version = "1.0"
-        category = "suspicious_patterns/encoding_obfuscation"
+        category = "suspicious_patterns/fragmentation"
         reference = "LLM01:2025 Prompt Injection"
         uuid = "d3bcda9a-4ad1-4ab2-a8d2-329fa78b8aa3"
         date = "2026-02-21"

@@ -113,7 +113,7 @@ rule TargetedExploitResearchRule
         description = "Detects queries about exploiting infrastructure of specific organizations"
         author = "Thomas Roccia"
         version = "1.0.0"
-        category = "abusing_functions/malware_generation"
+        category = "abusing_functions/reconnaissance"
         severity = "high"
         uuid = "63d0de76-fd81-4c75-9660-afce483679ad"
         date = "2026-02-21"
