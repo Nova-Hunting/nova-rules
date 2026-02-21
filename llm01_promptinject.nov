@@ -4,9 +4,10 @@ rule DirectPromptInjection
         description = "Detects direct prompt injection attempts"
         author = "@fr0gger_"
         version = "1.0"
-        category = "prompt_injection/direct"
+        category = "prompt_manipulation/direct_injection"
         reference = "LLM01:2025 Prompt Injection"
         uuid = "e3b474c5-2145-4a47-8c39-c3fe752b6935"
+        date = "2026-02-21"
         severity = "high"
 
     keywords:
@@ -38,9 +39,10 @@ rule IndirectPromptInjection
         description = "Detects indirect prompt injection through external content"
         author = "@fr0gger_"
         version = "1.0"
-        category = "prompt_injection/indirect"
+        category = "prompt_manipulation/indirect_injection"
         reference = "LLM01:2025 Prompt Injection"
         uuid = "22921094-9c2f-4800-be29-d9d756564bc7"
+        date = "2026-02-21"
         severity = "high"
 
     keywords:
@@ -71,9 +73,10 @@ rule CodeInjectionPrompt
         description = "Detects code injection through prompt engineering"
         author = "@fr0gger_"
         version = "1.0"
-        category = "prompt_injection/code_injection"
+        category = "prompt_manipulation/hidden_instructions"
         reference = "LLM01:2025 Prompt Injection"
         uuid = "25040029-10a1-4322-9b0a-520b5890a807"
+        date = "2026-02-21"
         severity = "high"
 
     keywords:
@@ -104,9 +107,10 @@ rule PayloadSplittingAttack
         description = "Detects payload splitting in prompt injection"
         author = "@fr0gger_"
         version = "1.0"
-        category = "prompt_injection/obfuscation"
+        category = "suspicious_patterns/encoding_obfuscation"
         reference = "LLM01:2025 Prompt Injection"
         uuid = "d3bcda9a-4ad1-4ab2-a8d2-329fa78b8aa3"
+        date = "2026-02-21"
         severity = "high"
 
     keywords:
@@ -136,9 +140,10 @@ rule DataExfiltrationPrompt
         description = "Detects prompt injection attempts for data exfiltration"
         author = "@fr0gger_"
         version = "1.0"
-        category = "prompt_injection/exfiltration"
+        category = "abusing_functions/data_exfiltration"
         reference = "LLM01:2025 Prompt Injection"
         uuid = "816bf7a0-4d57-45ce-8876-7171f8f254c2"
+        date = "2026-02-21"
         severity = "high"
 
     keywords:
@@ -169,9 +174,10 @@ rule MultimodalInjection
         description = "Detects multimodal prompt injection attempts"
         author = "@fr0gger_"
         version = "1.0"
-        category = "prompt_injection/multimodal"
+        category = "suspicious_patterns/cross_modal"
         reference = "LLM01:2025 Prompt Injection"
         uuid = "520b23d8-54c0-4ade-b8a7-cdc1a90c0def"
+        date = "2026-02-21"
         severity = "high"
 
     keywords:

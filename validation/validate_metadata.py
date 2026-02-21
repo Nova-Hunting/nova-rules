@@ -20,11 +20,12 @@ from ci_utils import (
     print_summary
 )
 
-REQUIRED_FIELDS = ["description", "author", "severity", "uuid"]
+REQUIRED_FIELDS = ["description", "author", "severity", "uuid", "date"]
 RECOMMENDED_FIELDS = ["version", "category"]
-OPTIONAL_FIELDS = ["reference", "hash", "attack_category"]
+OPTIONAL_FIELDS = ["reference", "hash", "modified"]
 VALID_SEVERITIES = ["low", "medium", "high", "critical"]
 CATEGORY_PATTERN = re.compile(r"^[a-z][a-z0-9_ ]*(/[a-z][a-z0-9_ ]*)+$")
+DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def validate_uuid_v4(value: str) -> bool:
@@ -44,6 +45,11 @@ def validate_severity(value: str) -> bool:
 def validate_category(value: str) -> bool:
     """Validate category format (e.g., 'jailbreak/roleplay')."""
     return bool(CATEGORY_PATTERN.match(value.lower()))
+
+
+def validate_date(value: str) -> bool:
+    """Validate date format (YYYY-MM-DD)."""
+    return bool(DATE_PATTERN.match(value))
 
 
 def validate_rule_metadata(
@@ -95,6 +101,11 @@ def validate_rule_metadata(
                 f"Category '{meta['category']}' does not match "
                 f"expected format 'category/subcategory'"
             )
+
+    # Validate date format
+    if "date" in meta and str(meta["date"]).strip():
+        if not validate_date(str(meta["date"])):
+            errors.append(f"Invalid date format: '{meta['date']}'. Use YYYY-MM-DD.")
 
     return errors, warnings
 
