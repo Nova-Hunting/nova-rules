@@ -72,16 +72,16 @@ def check_duplicate_rule_names(
 def check_naming_convention(
     rules_with_files: List[Tuple[str, NovaRule]], rules_dir: str
 ) -> List[str]:
-    """Check that rule names follow PascalCase convention. Returns warnings."""
-    warnings = []
+    """Check that rule names follow PascalCase convention. Returns error messages."""
+    errors = []
     for fpath, rule in rules_with_files:
         relative = os.path.relpath(fpath, rules_dir)
         if not PASCAL_CASE_PATTERN.match(rule.name):
-            warnings.append(
+            errors.append(
                 f"Rule '{rule.name}' in {relative}: "
                 f"name does not follow PascalCase convention"
             )
-    return warnings
+    return errors
 
 
 def check_file_extensions(nov_files: List[str], rules_dir: str) -> List[str]:
@@ -143,13 +143,12 @@ def run(rules_dir: str, verbose: bool = False, **kwargs) -> Tuple[int, Dict[str,
     else:
         print_pass("No duplicate rule names found")
 
-    # --- Warning checks ---
     print(f"\n  --- Naming Conventions ---")
-    naming_warnings = check_naming_convention(successes, rules_dir)
-    if naming_warnings:
-        all_warnings.extend(naming_warnings)
-        for w in naming_warnings:
-            print_warn(w)
+    naming_errors = check_naming_convention(successes, rules_dir)
+    if naming_errors:
+        all_errors.extend(naming_errors)
+        for e in naming_errors:
+            print_fail(e)
     else:
         print_pass("All rule names follow PascalCase")
 

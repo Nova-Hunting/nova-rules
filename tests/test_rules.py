@@ -83,25 +83,37 @@ def load_test_cases(tests_dir: str) -> List[Dict[str, Any]]:
                 fpath = os.path.join(root, fname)
                 with open(fpath, "r") as f:
                     data = yaml.safe_load(f)
-                if data and "tests" in data:
-                    for tc in data["tests"]:
-                        tc["_source_yaml"] = fpath
-                        tc["_rule_file"] = data.get("rule_file", "")
-                        if "rule_name" not in tc:
-                            tc["rule_name"] = data.get("rule_name", "")
+                
+                if not data or "tests" not in data:
+                    continue
+                
+                rule_file = data.get("rule_file", "")
+                
+                for tc in data["tests"]:
+                    tc["_source_yaml"] = fpath
+                    tc["_rule_file"] = rule_file
 
-                        # Expand multi-prompt test cases
-                        prompts = tc.get("prompts")
-                        if prompts and isinstance(prompts, list):
-                            base_name = tc.get("name", tc.get("rule_name", "") + " test")
-                            for i, prompt in enumerate(prompts, 1):
-                                expanded = copy.deepcopy(tc)
-                                expanded["prompt"] = prompt
-                                expanded["name"] = f"{base_name} [{i}/{len(prompts)}]"
-                                expanded.pop("prompts", None)
-                                test_cases.append(expanded)
-                        else:
+                    # Detect conflict before expansion
+                    if tc.get("prompt") and tc.get("prompts"):
+                        tc["_has_conflict"] = True
+
+                    # Expand multi-prompt test cases
+                    prompts = tc.get("prompts")
+                    if prompts and isinstance(prompts, list):
+                        base_name = tc.get("name")
+                        if not base_name:
+                            # We'll catch the missing name in the run loop
                             test_cases.append(tc)
+                            continue
+
+                        for i, prompt in enumerate(prompts, 1):
+                            expanded = copy.deepcopy(tc)
+                            expanded["prompt"] = prompt
+                            expanded["name"] = f"{base_name} [{i}/{len(prompts)}]"
+                            expanded.pop("prompts", None)
+                            test_cases.append(expanded)
+                    else:
+                        test_cases.append(tc)
     return test_cases
 
 
@@ -252,13 +264,39 @@ def run(
     for tc in test_cases:
         rule_file = tc.get("_rule_file", "")
         rule_name = tc.get("rule_name", "")
-        test_name = tc.get("name", f"{rule_name} test")
+        test_name = tc.get("name")
         prompt = tc.get("prompt", "")
-        expected_match = tc.get("expected_match", False)
+        expected_match = tc.get("expected_match")
+
+        if not test_name:
+            source = os.path.basename(tc.get("_source_yaml", "unknown"))
+            print_fail(f"Test case in {source} is missing mandatory 'name' field")
+            failed += 1
+            continue
+
+        if not rule_file:
+            print_fail(f"{test_name}: missing mandatory 'rule_file' field")
+            failed += 1
+            continue
+
+        if not rule_name:
+            print_fail(f"{test_name}: missing mandatory 'rule_name' field")
+            failed += 1
+            continue
 
         if not prompt:
-            print_warn(f"{test_name}: missing 'prompt' field, skipping")
-            skipped += 1
+            print_fail(f"{test_name}: missing mandatory 'prompt' field")
+            failed += 1
+            continue
+
+        if tc.get("_has_conflict"):
+             print_fail(f"{test_name}: both 'prompt' and 'prompts' defined. Choose only one.")
+             failed += 1
+             continue
+
+        if expected_match is None:
+            print_fail(f"{test_name}: missing mandatory 'expected_match' field")
+            failed += 1
             continue
 
         # Load rule file if not cached

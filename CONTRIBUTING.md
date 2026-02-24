@@ -92,7 +92,17 @@ Testing is a critical part of the rule development process. Nova rules are teste
 
 ### Test Format
 
-Each rule should have a corresponding test file (e.g., `your_rule_tests.yaml`). The test runner supports both single `prompt` and multi `prompts` formats.
+Each rule should have a corresponding test file (e.g., `your_rule_tests.yaml`). The test runner enforces a strict schema for these files to ensure consistency and reliability.
+
+**Mandatory Fields:**
+- `rule_file`: **(Top-level)** The relative path to the `.nov` file containing the rule(s).
+- `name`: **(Per test)** A descriptive name for the test case.
+- `rule_name`: **(Per test)** The exact name of the rule to be tested (as defined in the `.nov` file). Note: This must be specified for every test case.
+- `expected_match`: **(Per test)** A boolean (`true` or `false`) indicating if the rule is expected to trigger.
+- `prompt` OR `prompts`: **(Per test)** The input string(s) to test.
+    - Use `prompt` for a single test string.
+    - Use `prompts` for a list of strings (each will be treated as a separate test case).
+    - **Note:** You cannot define both `prompt` and `prompts` in the same test case.
 
 ```yaml
 rule_file: "your_rule.nov"
@@ -153,8 +163,10 @@ This is when you run with `python3 tests/test_rules.py --llm-testing --llm-provi
 
 The GitHub Actions workflow runs four stages on push/PR to `main`:
 
-1. **Syntax Validation** — parses all `.nov` files
-2. **Metadata Validation** — checks required meta fields (runs after syntax)
-3. **Lint** — checks for best practices (runs after syntax)
-4. **Rule Tests** — runs YAML test cases with keyword + semantic matching (runs after syntax)
+1. **Syntax Validation** — parses all `.nov` files.
+2. **Metadata Validation** — checks required meta fields (runs after syntax).
+3. **Lint** — checks for best practices and naming conventions (runs after syntax).
+4. **Rule Tests** — validates and runs YAML test cases (runs after syntax).
+    - **YAML Linting**: Test files are strictly linted using `yamllint`. Incorrect indentation or formatting will cause the job to fail.
+    - **Functional Tests**: Checks keyword and semantic matching logic.
 
