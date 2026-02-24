@@ -27,7 +27,7 @@ jobs:
   syntax:
     name: Syntax Validation
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
 
@@ -47,7 +47,7 @@ jobs:
     name: Metadata Validation
     needs: [syntax]
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
 
@@ -67,7 +67,7 @@ jobs:
     name: Lint Rules
     needs: [syntax]
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
 
@@ -87,7 +87,7 @@ jobs:
     name: Rule Tests
     needs: [syntax]
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
 
