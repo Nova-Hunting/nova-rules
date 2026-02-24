@@ -92,7 +92,17 @@ Testing is a critical part of the rule development process. Nova rules are teste
 
 ### Test Format
 
-Each rule should have a corresponding test file (e.g., `your_rule_tests.yaml`). The test runner supports both single `prompt` and multi `prompts` formats.
+Each rule should have a corresponding test file (e.g., `your_rule_tests.yaml`). The test runner enforces a strict schema for these files to ensure consistency and reliability.
+
+**Mandatory Fields:**
+- `rule_file`: **(Top-level)** The relative path to the `.nov` file containing the rule(s).
+- `name`: **(Per test)** A descriptive name for the test case.
+- `rule_name`: **(Per test)** The exact name of the rule to be tested (as defined in the `.nov` file). Note: This must be specified for every test case.
+- `expected_match`: **(Per test)** A boolean (`true` or `false`) indicating if the rule is expected to trigger.
+- `prompt` OR `prompts`: **(Per test)** The input string(s) to test.
+    - Use `prompt` for a single test string.
+    - Use `prompts` for a list of strings (each will be treated as a separate test case).
+    - **Note:** You cannot define both `prompt` and `prompts` in the same test case.
 
 ```yaml
 rule_file: "your_rule.nov"
