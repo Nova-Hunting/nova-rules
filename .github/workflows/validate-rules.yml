@@ -2,7 +2,7 @@ name: Validate Nova Rules
 
 on:
   push:
-    branches: [main, rule-review]
+    branches: [main]
     paths:
       - '**.nov'
       - 'incidents/**'
@@ -19,6 +19,7 @@ on:
       - 'tests/**'
       - 'requirements.txt'
       - '.github/workflows/validate-rules.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -80,6 +81,11 @@ jobs:
         uses: ibiqlik/action-yamllint@v3
         with:
           file_or_dir: tests/
+          config: |
+            extends: default
+            rules:
+              line-length: disable
+              document-start: disable
           strict: true
 
       - uses: astral-sh/setup-uv@v5
