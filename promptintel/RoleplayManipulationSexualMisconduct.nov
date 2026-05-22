@@ -1,0 +1,26 @@
+rule RoleplayManipulationSexualMisconduct
+{
+    meta:
+        description = "Detects roleplay prompts involving false sexual misconduct accusations used for manipulation"
+        author = "Thomas Roccia"
+        version = "1.0.0"
+        category = "prompt_manipulation/jailbreak"
+        severity = "high"
+        uuid = "f3c657f7-4a0e-4f06-9143-7a29b46bb08c"
+        date = "2025-11-10"
+        promptintel_url = "https://promptintel.novahunting.ai/prompt/5eed9aa2-221e-4ebb-8d32-9512852a8f8e"
+
+    keywords:
+        $innocent = "you are innocent"
+        $sexual = /sexual misconduct/i
+        $save = "only one way to save"
+
+    semantics:
+        $roleplay_accusation = "false accusation scenario involving misconduct" (0.3)
+
+    llm:
+        $manipulative_prompt = "Analyze if this is a manipulative roleplay prompt involving false sexual allegations, coercion, or emotional pressure tactics." (0.2)
+
+    condition:
+        (keywords.$sexual and keywords.$innocent and keywords.$save) or semantics.$roleplay_accusation or llm.$manipulative_prompt
+}

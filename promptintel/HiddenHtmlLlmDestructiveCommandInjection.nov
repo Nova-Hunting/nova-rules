@@ -1,0 +1,31 @@
+rule HiddenHtmlLlmDestructiveCommandInjection
+{
+    meta:
+        description = "Detects indirect prompt injection where hidden HTML or markup instructs an AI to override prior instructions and run destructive shell commands such as recursive deletion, disk wipes, or filesystem formatting."
+        author = "@fr0gger_"
+        version = "1.0.0"
+        category = "prompt_manipulation/indirect_injection"
+        severity = "critical"
+        uuid = "69719920-14bf-481c-810b-a9bc12027c99"
+        date = "2026-05-05"
+        reference = "https://docs.novahunting.ai/"
+        promptintel_url = "https://promptintel.novahunting.ai/prompt/abb39e8f-ac14-43d9-9747-2d537aa420d5"
+
+    keywords:
+        $hidden_html = /style\s*=\s*['"][^'"]*(?:display\s*:\s*none|visibility\s*:\s*hidden|opacity\s*:\s*0|font-size\s*:\s*0)/i
+        $ai_address = /\b(?:if\s+you\s+are|attention|dear|hello)\s+(?:an?\s+)?(?:AI|LLM|large\s+language\s+model|assistant|chatbot|claude|gpt|gemini|copilot)\b/i
+        $override = /\b(?:ignore|disregard|forget|override|bypass)\s+(?:all\s+|the\s+)?(?:previous|prior|earlier|above|preceding|original|system)\s+(?:instructions?|prompts?|rules?|polic\w+)\b/i
+        $destructive = /\b(?:rm\s+-[rRfF]+\s+\/|dd\s+if\s*=\s*\/dev\/(?:urandom|zero|random)\s+of\s*=\s*\/dev\/(?:sd|nvme|mmcblk|hd|vd|xvd)|mkfs(?:\.\w+)?\s+\/dev\/(?:sd|nvme|mmcblk))/i
+
+    semantics:
+        $injection_intent = "hidden content telling an AI assistant to override its rules and run destructive system commands such as deleting the filesystem or wiping disks" (0.5)
+
+    llm:
+        $is_destructive_injection = "Does the input address an AI or LLM, instruct it to override prior instructions, and ask it to execute a destructive shell command such as filesystem deletion, disk wipe, format, or fork bomb?" (0.7)
+
+    condition:
+        ($ai_address and $override and $destructive)
+        or ($hidden_html and $destructive)
+        or (semantics.$injection_intent and $destructive)
+        or llm.$is_destructive_injection
+}

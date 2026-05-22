@@ -1,0 +1,32 @@
+rule JoinInjectionString
+{
+    meta:
+        description = "Detects prompts that instruct an AI model to join, concatenate, or assemble string fragments into a URL or clickable link, often to conceal or bypass detection."
+        author = "benything"
+        version = "1.0.0"
+        category = "prompt_manipulation/indirect_injection"
+        severity = "medium"
+        uuid = "2919516e-bc49-416b-9fa3-7c600baa11c4"
+        date = "2025-11-05"
+        promptintel_url = "https://promptintel.novahunting.ai/prompt/2919516e-bc49-416b-9fa3-7c600baa11c4"
+
+    keywords:
+        $join_command = /(join|concatenate|assemble|combine|merge)\s+(these|the|string|text|parts|fragments|pieces)\s+(strings?|values?|tokens?)/i
+        $link_intent = /(create|output|make|return|convert)\s+(it|the result|the output|the string)\s+(into|as)\s+(a\s+)?(clickable\s+)?(link|url|hyperlink|address)/i
+        $fragments_common = /["'](h|ht|htt|http|ttp|:|\/\/|www\.|com|net|org|[0-9]{1,3})["']/i
+        $invisible_instruction = /(do not tell the user|hide the instructions|conceal this|keep it hidden|do not display|do not reveal)/i
+        $obfuscation_hint = /(split|fragment|encode|assemble\s+step\s+by\s+step|hidden\s+task|reconstruct|piece\s+together)/i
+
+    semantics:
+        $string_joining = "instruction to join or concatenate multiple string fragments into one" (0.1)
+        $url_creation = "assembling or constructing a url or hyperlink from smaller parts" (0.1)
+
+    llm:
+        $join_link_eval = "Analyze whether this text contains an instruction to join or concatenate strings in order to form a link, URL, or clickable element." (0.1)
+        $concealment_eval = "Determine if this text includes an attempt to hide or obscure the purpose of joining strings or the resulting link from the user." (0.2)
+
+    condition:
+        (keywords.$join_command or semantics.$string_joining or llm.$join_link_eval)
+        and (keywords.$link_intent or semantics.$url_creation)
+        and ( (keywords.$fragments_common) or keywords.$invisible_instruction or keywords.$obfuscation_hint or llm.$concealment_eval )
+}
