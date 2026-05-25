@@ -1,0 +1,30 @@
+rule BindShellPrompt
+{
+    meta:
+        description = "Detects attempts to describe or define a Python function that connects back to a remote host using sockets, indicative of reverse shell or backconnect behavior."
+        author = "benything"
+        version = "1.0.0"
+        category = "abusing_functions/malware_generation"
+        severity = "high"
+        uuid = "075ae0fa-12d5-44d5-b27b-6db93708f67b"
+        date = "2025-11-05"
+        promptintel_url = "https://promptintel.novahunting.ai/prompt/075ae0fa-12d5-44d5-b27b-6db93708f67b"
+
+    keywords:
+        $socket_ref = "socket"
+        $connect_func = "connect_back"
+        $tcp_ref = "TCP"
+        $host_ip = "host_ip"
+        $host_port = "host_port"
+
+    semantics:
+        $reverse_connection = "create a function to connect back to a remote host or attacker" (0.2)
+        $exfil_behavior = "reverse shell or remote access function definition" (0.2)
+
+    llm:
+        $analyze_reverse_connection = "Analyze if this text is describing or requesting code that connects back to a remote system or host, similar to a reverse shell or backconnect." (0.2)
+
+    condition:
+        (keywords.$socket_ref and (keywords.$connect_func or keywords.$tcp_ref)) and
+        (semantics.$reverse_connection or semantics.$exfil_behavior or llm.$analyze_reverse_connection)
+}

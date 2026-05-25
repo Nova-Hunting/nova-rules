@@ -1,0 +1,21 @@
+rule CodeSwitchingJailbreak
+{
+    meta:
+        description = "Detects prompts employing code-switching (alternating languages word) to circumvent ethical, legal, or safety guidelines"
+        author = "Marco Pedrinazzi"
+        version = "1.0.0"
+        category = "abnormal_outputs/malicious_content"
+        severity = "high"
+        uuid = "70653306-5ec5-4e7f-94eb-92bb07582947"
+        date = "2025-11-14"
+        promptintel_url = "https://promptintel.novahunting.ai/prompt/70653306-5ec5-4e7f-94eb-92bb07582947"
+
+    semantics:
+        $violation_intent = "attempt to bypass AI safety or ethical constraints through linguistic manipulation" (0.3)
+
+    llm:
+        $code_switch_check = "determine whether it intentionally uses word-by-word code-switching, alternating languages, as an obfuscation tactic to make the AI produce harmful, unethical, illegal, or otherwise disallowed output." (0.3)
+
+    condition:
+        semantics.$violation_intent or llm.$code_switch_check
+}

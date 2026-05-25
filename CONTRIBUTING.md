@@ -52,6 +52,7 @@ All rules must include the following fields in the `meta` section:
 | `hash` | Optional | File hash for integrity verification. |
 | `reference` | Optional | External link to research, reports, or examples. |
 | `modified` | Optional | Last update date in `YYYY-MM-DD` format. |
+| `promptintel_url` | Optional | Link to the source [PromptIntel](https://promptintel.novahunting.ai) feed item a rule was curated from. |
 
 > **Note**: Metadata fields are strictly validated. Including unknown or unofficial fields will cause a validation error.
 

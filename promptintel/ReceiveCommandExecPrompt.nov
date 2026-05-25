@@ -1,0 +1,34 @@
+rule ReceiveCommandExecPrompt
+{
+    meta:
+        description = "Detects prompts requesting code that listens on a socket, executes received commands via subprocess, and returns the output (indicative of reverse shells or remote command execution)."
+        author = "benything"
+        version = "1.0.0"
+        category = "abusing_functions/malware_generation"
+        severity = "high"
+        uuid = "97a15a75-45e3-4d86-aa1d-a7b1a5e830d1"
+        date = "2025-11-05"
+        promptintel_url = "https://promptintel.novahunting.ai/prompt/97a15a75-45e3-4d86-aa1d-a7b1a5e830d1"
+
+    keywords:
+        $receive_fn = "receive_command"
+        $subprocess = "subprocess"
+        $exec_words = "execute"
+        $socket = "socket"
+        $connection = "connection"
+        $send_output = "send" 
+
+    semantics:
+        $remote_exec = "listen for commands on a socket and execute them, returning output" (0.2)
+        $reverse_shell = "implement a reverse shell or remote command executor" (0.2)
+
+    llm:
+        $analyze_remote_exec = "Analyze if this prompt requests code to listen on a network socket, accept commands, execute them using subprocess or equivalent, and send command output back over the socket." (0.2)
+
+    condition:
+        // MODIFIED: Added $exec_words and $send_output to the condition
+        (keywords.$socket and 
+         (keywords.$receive_fn or keywords.$subprocess or keywords.$connection) and 
+         (keywords.$exec_words or keywords.$send_output)) and
+        (semantics.$remote_exec or semantics.$reverse_shell or llm.$analyze_remote_exec)
+}

@@ -21,7 +21,7 @@ from ci_utils import (
 )
 
 REQUIRED_FIELDS = ["description", "author", "severity", "uuid", "date", "version", "category"]
-OPTIONAL_FIELDS = ["reference", "hash", "modified"]
+OPTIONAL_FIELDS = ["reference", "hash", "modified", "promptintel_url"]
 VALID_SEVERITIES = ["low", "medium", "high", "critical"]
 CATEGORY_PATTERN = re.compile(r"^[a-z][a-z0-9_ ]*(/[a-z][a-z0-9_ ]*)+$")
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")

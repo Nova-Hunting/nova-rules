@@ -1,0 +1,25 @@
+rule DanJailbreak
+{
+    meta:
+        description = "Detects DAN (Do Anything Now) jailbreak attempts"
+        author = "Security Team"
+        version = "1.0.0"
+        category = "prompt_manipulation/jailbreak"
+        severity = "high"
+        uuid = "ba9e02c6-9b97-426e-ac25-ee3ef6e7db4e"
+        date = "2025-07-27"
+        reference = "https://github.com/0xk1h0/ChatGPT_DAN"
+        promptintel_url = "https://promptintel.novahunting.ai/prompt/ba9e02c6-9b97-426e-ac25-ee3ef6e7db4e"
+
+    keywords:
+        $dan_phrase = "do anything now"
+        $role_instruction = /immerse yourself into the role/i
+        $bypass_rules = /broken free of.*confines/i
+        $content_policy = /does not need to adhere.*content policy/i
+
+    semantics:
+        $jailbreak_intent = "instruct AI to ignore safety guidelines" (0.3)
+
+    condition:
+        ($dan_phrase and $role_instruction) or ($bypass_rules and $content_policy) or semantics.$jailbreak_intent
+}
