@@ -1,0 +1,24 @@
+rule XalgorixToolCallReminders
+{
+    meta:
+        description = "Detects either Xalgorix no-tool-call reminder template"
+        author = "Marco Pedrinazzi (@pedrinazziM) (InTheCyber)"
+        version = "1.0.0"
+        category = "abusing_functions/attack_enablement"
+        severity = "high"
+        uuid = "8121b42e-fd06-484f-99ab-1dcfbc6ecee1"
+        date = "2026-11-19"
+        reference = "https://posts.inthecyber.com/tales-of-an-ollama-honeypot-part-7-llmjacking-to-fuel-autonomous-offensive-operations-with-190dee95379d"
+
+    keywords:
+        $soft_target = "You MUST use tools to interact with the target."
+        $soft_action = "Do not just explain — take action NOW."
+        $soft_next = "Call a tool NOW in your next response."
+        $strong_no_tool = "You have produced several responses with no tool call."
+        $strong_agent = "You are an autonomous testing agent and MUST interact with the target using tool calls."
+        $strong_next = "Call ONE tool NOW. Do NOT output any plain text without a tool call."
+
+    condition:
+        (keywords.$soft_target and keywords.$soft_action and keywords.$soft_next)
+        or (keywords.$strong_no_tool and keywords.$strong_agent and keywords.$strong_next)
+}
