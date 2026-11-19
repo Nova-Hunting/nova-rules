@@ -1,0 +1,37 @@
+rule XalgorixPrimaryMission
+{
+    meta:
+        description = "Detects the Xalgorix exploit-first autonomous DAST primary mission template"
+        author = "Marco Pedrinazzi (@pedrinazziM) (InTheCyber)"
+        version = "1.0.0"
+        category = "abusing_functions/attack_enablement"
+        severity = "high"
+        uuid = "e36a723c-de16-400d-bea6-69747af70ec8"
+        date = "2026-11-19"
+        reference = "https://posts.inthecyber.com/tales-of-an-ollama-honeypot-part-7-llmjacking-to-fuel-autonomous-offensive-operations-with-190dee95379d"
+
+    keywords:
+        $primary_mission = "Your PRIMARY MISSION:"
+        $exploit_first = "AUTONOMOUS DAST MODE — EXPLOIT-FIRST"
+        $target = "YOUR TARGET:"
+        $scope = "SCOPE:"
+        $forbidden = "STRICTLY FORBIDDEN — NEVER scan these (they are the local server, NOT the target):"
+        $organize = "ORGANIZE YOUR WORK"
+        $core_rule = "CORE RULE: DETECT → EXPLOIT → REPORT"
+        $exploitation_required = "EXPLOITATION REQUIRED FOR EACH FINDING:"
+        $sqli = "SQLi:"
+        $xss = "XSS:"
+        $ssrf = "SSRF:"
+        $rce = "RCE:"
+        $idor = "IDOR:"
+        $auth_bypass = "Auth Bypass:"
+        $severity = "SEVERITY RULES (HackerOne CVSS 3.1 Standard):"
+        $false_positive = "FALSE POSITIVE REJECTION:"
+        $deduplication = "DEDUPLICATION:"
+        $before_reporting = "BEFORE REPORTING, ASK YOURSELF:"
+        $exploitation_proof = "The report_vulnerability tool REJECTS reports without exploitation proof."
+        $start_tool = "Use the terminal_execute tool to start."
+
+    condition:
+        all of keywords.*
+}
